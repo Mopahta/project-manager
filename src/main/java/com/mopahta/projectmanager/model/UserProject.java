@@ -1,6 +1,9 @@
 package com.mopahta.projectmanager.model;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user_project", schema = "project_manager_db")
@@ -20,4 +23,7 @@ public class UserProject {
     private Project project;
 
     private String roles;
+
+    @CreatedDate
+    private Date date_joined;
 }

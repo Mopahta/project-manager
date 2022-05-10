@@ -20,4 +20,6 @@ public class ProjectTask {
     private Project project;
 
     private String task;
+
+    private boolean finished;
 }
