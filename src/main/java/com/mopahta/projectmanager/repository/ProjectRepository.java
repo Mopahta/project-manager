@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @NonNull
     List<Project> findAll();
+    List<Project> findAllByIdIn(List<Long> ids);
 }

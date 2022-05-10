@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www/thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="headerfiles">
+    <title>Project Manager</title>
+    <meta charset="UTF-8"/>
+    <link th:href="@{~/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<h1>Sign up</h1>
+<form th:action="@{/signup}" th:object="${user}" method="POST">
+    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="text" id="username" class="form-control form-control-lg"
+               placeholder="Enter username" th:field="*{username}" th:errorclass="is-invalid"/>
+        <label class="form-label" for="username">Username</label>
+    </div>
+
+
+    <div class="form-outline mb-3">
+        <input type="password" id="password" class="form-control form-control-lg"
+               placeholder="Enter password" th:field="*{password}"/>
+        <label class="form-label" for="password">Password</label>
+    </div>
+
+    <div class="form-outline mb-3">
+        <input type="password" id="matchingPassword" class="form-control form-control-lg"
+               placeholder="Enter password" th:field="*{matchingPassword}"/>
+        <label class="form-label" for="matchingPassword">Matching password</label>
+    </div>
+
+    <div class="text-center text-lg-start mt-4 pt-2">
+        <button type="submit" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">Sign up</button>
+        <p class="small fw-bold mt-2 pt-1 mb-0">Have an account? <a href="/login"
+                                                                          class="link-danger">Login</a></p>
+    </div>
+</form>
+
+</body>
+</html>
