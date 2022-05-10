@@ -23,4 +23,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     List<UserProject> userProjects;
+
+    @OneToMany(mappedBy = "project")
+    List<ProjectTask> projectTasks;
 }

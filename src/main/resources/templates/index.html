@@ -4,10 +4,9 @@
         xmlns:th="http://www/thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="headerfiles">
-    <title>Introduction to SpringBoot Security</title>
+    <title>Project Manager</title>
     <meta charset="UTF-8"/>
     <link th:href="@{~/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{~/fontawesome/css/all.css}" rel="stylesheet">
 </head>
 <body>
     <div th:fragment="nav">
@@ -20,13 +19,13 @@
                         <a class="nav-link" href="#" th:href="@{~/index}"><i class="fa fa-home"></i>Home</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{~/profile/index}">Profile</a>
+                        <a class="nav-link" href="#" th:href="@{~/profile/}">Profile</a>
                     </li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{~/admin/index}">Admin</a>
+                        <a class="nav-link" href="#" th:href="@{~/admin/}">Admin</a>
                     </li>
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')" class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{~/management/index}">Management</a>
+                        <a class="nav-link" href="#" th:href="@{~/management/}">Management</a>
                     </li>
                 </ul>
                 <a sec:authorize="isAuthenticated()" th:href="@{~/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">Logout</a>
