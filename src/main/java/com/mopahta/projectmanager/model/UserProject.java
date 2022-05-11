@@ -1,5 +1,7 @@
 package com.mopahta.projectmanager.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -7,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user_project", schema = "project_manager_db")
+@Getter @Setter
 public class UserProject {
 
     @EmbeddedId

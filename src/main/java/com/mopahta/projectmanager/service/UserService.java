@@ -27,6 +27,13 @@ public class UserService {
                 passwordEncoder.encode(userDTO.getPassword()), "USER"));
     }
 
+    public String checkPasswordsMatch(UserDTO userDTO) {
+        if (!userDTO.getPassword().equals(userDTO.getMatchingPassword())) {
+            return "Passwords don't match.";
+        }
+        return "";
+    }
+
     public boolean userExists(String username) {
         return getUserByUsername(username) != null;
     }

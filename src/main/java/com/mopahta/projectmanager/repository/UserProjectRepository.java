@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UserProjectRepository extends JpaRepository<UserProject, UserProjectKey> {
-    List<ProjectRepository> findAllByUser(User user);
+    List<UserProject> findAllByUser(User user);
 }

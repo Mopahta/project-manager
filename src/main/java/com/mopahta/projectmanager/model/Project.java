@@ -3,6 +3,7 @@ package com.mopahta.projectmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -23,8 +24,8 @@ public class Project {
 
     private String description = "";
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creation_date = new Date();
+    @CreationTimestamp
+    private Date creation_date;
 
     @OneToMany(mappedBy = "project")
     List<UserProject> userProjects;
