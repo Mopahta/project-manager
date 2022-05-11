@@ -2,7 +2,7 @@ package com.mopahta.projectmanager.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserProject {
 
     @EmbeddedId
-    private UserProjectKey id;
+    private UserProjectKey id = new UserProjectKey();
 
     @ManyToOne
     @MapsId("userId")
@@ -27,6 +27,6 @@ public class UserProject {
 
     private String roles;
 
-    @CreatedDate
+    @CreationTimestamp
     private Date date_joined;
 }

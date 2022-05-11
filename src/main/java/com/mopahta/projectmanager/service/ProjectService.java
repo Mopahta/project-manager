@@ -1,5 +1,6 @@
 package com.mopahta.projectmanager.service;
 
+import com.mopahta.projectmanager.dto.UserProjectDTO;
 import com.mopahta.projectmanager.model.Project;
 import com.mopahta.projectmanager.model.UserProject;
 import com.mopahta.projectmanager.repository.ProjectRepository;
@@ -25,16 +26,21 @@ public class ProjectService {
     @Autowired
     UserService userService;
 
-    public List<Project> findAllProjects() {
+    public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
     public List<Project> findUserProjects(Collection<? extends GrantedAuthority> authorities, String username) {
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                return findAllProjects();
+                return getAllProjects();
             }
         }
+
+        return getUserProjectsByUsername(username);
+    }
+
+    public List<Project> getUserProjectsByUsername(String username) {
         List<Project> projects = new ArrayList<>();
 
         userProjectRepository.findAllByUser(userService.getUserByUsername(username)).
@@ -43,5 +49,9 @@ public class ProjectService {
                 } );
 
         return projects;
+    }
+
+    public Project getProjectById(Long id) {
+        return projectRepository.getById(id);
     }
 }

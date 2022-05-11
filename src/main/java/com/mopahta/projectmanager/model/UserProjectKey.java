@@ -1,5 +1,6 @@
 package com.mopahta.projectmanager.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class UserProjectKey implements Serializable {
 
     @Column(name = "user_id")

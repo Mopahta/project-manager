@@ -33,6 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/private/**").hasRole("ADMIN")
                 .and()
                 .formLogin();
+        http
+                .cors().disable()
+                .csrf().disable();
     }
 
     @Bean
