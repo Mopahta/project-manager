@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class ProjectTask {
 
     @EmbeddedId
-    private ProjectTaskKey id;
+    private ProjectTaskKey id = new ProjectTaskKey();
 
     @ManyToOne
     @MapsId("projectId")

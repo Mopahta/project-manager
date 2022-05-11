@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ProjectTaskKey implements Serializable {
 
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "order_id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "project_id", nullable = false)

@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class ProjectDTO {
 
+    private Long id;
+
     private String name;
 
     private Date creation_date;

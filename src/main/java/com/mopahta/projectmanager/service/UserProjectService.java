@@ -14,6 +14,7 @@ public class UserProjectService {
 
     @Autowired
     UserService userService;
+
     @Autowired
     ProjectService projectService;
 
@@ -32,6 +33,8 @@ public class UserProjectService {
     }
 
     public void removeUserFromProject(UserProjectDTO userProjectDTO) {
-        userProjectRepository.delete(DTOToUserProject(userProjectDTO));
+        userProjectRepository.deleteByUserAndProject(
+                userService.getUserById(userProjectDTO.getUserId()),
+                projectService.getProjectById(userProjectDTO.getProjectId()));
     }
 }

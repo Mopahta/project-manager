@@ -35,6 +35,7 @@ public class ProjectApiController {
         projectService.getUserProjectsByUsername(username).forEach(
                 (Project project) -> {
                     projects.add(new ProjectDTO(
+                            project.getId(),
                             project.getName(),
                             project.getCreation_date(),
                             project.getDescription(),
@@ -53,5 +54,17 @@ public class ProjectApiController {
     public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) {
         userProjectService.removeUserFromProject(userProjectDTO);
         return userProjectDTO;
+    }
+
+    @PostMapping(value = "create", consumes = "application/json")
+    public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO) {
+        projectService.createProject(projectDTO);
+        return projectDTO;
+    }
+
+    @DeleteMapping(value = "delete", consumes = "application/json")
+    public ProjectDTO deleteProject(@RequestBody ProjectDTO projectDTO) {
+        projectService.deleteProject(projectDTO);
+        return projectDTO;
     }
 }
