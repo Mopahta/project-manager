@@ -20,6 +20,4 @@ public class ProjectDTO {
     private Date creation_date;
 
     private String description;
-
-    List<ProjectTask> projectTasks;
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "project_task", schema = "project_manager_db")
-@SQLDelete(sql = "UPDATE project_task SET deleted = true WHERE order_id = ? and project_id = ?")
+@SQLDelete(sql = "UPDATE project_manager_db.project_task SET deleted = true WHERE order_id = ? and project_id = ?")
 @Where(clause = "deleted=false")
 @Getter @Setter @NoArgsConstructor
 public class ProjectTask {

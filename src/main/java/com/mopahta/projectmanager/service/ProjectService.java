@@ -29,6 +29,19 @@ public class ProjectService {
     @Autowired
     UserService userService;
 
+    public List<ProjectDTO> projectsToDTO(List<Project> projects) {
+        List<ProjectDTO> projectsDTO = new ArrayList<>();
+        projects.forEach(
+                (Project project) -> {
+                    projectsDTO.add(new ProjectDTO(
+                            project.getId(),
+                            project.getName(),
+                            project.getCreation_date(),
+                            project.getDescription()));
+                });
+        return projectsDTO;
+    }
+
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,23 +31,28 @@ public class UserApiController {
     private UserProjectService userProjectService;
 
     @GetMapping("all")
-    public List<User> getAllUsersList() {
-        return userService.getAllUsers();
+    public List<UserDTO> getAllUsersList() {
+        return userService.usersToDTO(userService.getAllUsers());
+    }
+
+    @GetMapping("all/active")
+    public List<UserDTO> getActiveUsersList() {
+        return userService.usersToDTO(userService.getActiveUsers());
     }
 
     @GetMapping("{id}")
-    public User getUserById(@PathVariable Long id) throws NotFoundException {
-        return userService.getUserById(id);
+    public UserDTO getUserById(@PathVariable Long id) throws NotFoundException {
+        return userService.usersToDTO(List.of(userService.getUserById(id))).get(0);
     }
 
     @GetMapping("all/admins")
-    public List<User> getAdminsList() {
-        return userService.getAdmins();
+    public List<UserDTO> getAdminsList() {
+        return userService.usersToDTO(userService.getAdmins());
     }
 
     @GetMapping("all/users")
-    public List<User> getUsersList() {
-        return userService.getUsers();
+    public List<UserDTO> getUsersList() {
+        return userService.usersToDTO(userService.getUsers());
     }
 
     @PostMapping(value = "add", consumes = "application/json")

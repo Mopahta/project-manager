@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,22 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private final String roleAdmin = "ADMIN";
+    private final String roleUser = "USER";
+
+    public List<UserDTO> usersToDTO(List<User> users) {
+        List<UserDTO> usersDTO = new ArrayList<>();
+        users.forEach((User user) -> {
+            usersDTO.add(new UserDTO(
+                    user.getId(),
+                    user.getUsername(),
+                    "",
+                    "",
+                    user.getRoles()));
+        });
+        return usersDTO;
+    }
 
     public void registerUser(UserDTO userDTO) throws UserAlreadyExistsException, InvalidValuesException {
         if (userDTO.getUsername().isEmpty()) {
@@ -61,6 +78,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getActiveUsers() {
+        return userRepository.findAllByActiveIsTrue();
+    }
+
     public User getUserById(Long id) throws NotFoundException {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -70,11 +91,11 @@ public class UserService {
     }
 
     public List<User> getAdmins() {
-        return userRepository.findAllByRolesContains("ADMIN");
+        return userRepository.findAllByRolesContains(roleAdmin);
     }
 
     public List<User> getUsers() {
-        return userRepository.findAllByRolesContains("USER");
+        return userRepository.findAllByRolesContains(roleUser);
     }
 
     public void deactivateUserById(Long id) throws NotFoundException {

@@ -3,6 +3,7 @@ package com.mopahta.projectmanager.controller.api;
 
 import com.mopahta.projectmanager.dto.ApiAnswer;
 import com.mopahta.projectmanager.dto.ProjectTaskDTO;
+import com.mopahta.projectmanager.exception.InvalidValuesException;
 import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.ProjectTask;
 import com.mopahta.projectmanager.service.ProjectTaskService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("api/v1/projects/tasks")
 public class ProjectTaskApiController {
 
@@ -21,8 +22,8 @@ public class ProjectTaskApiController {
     ProjectTaskService projectTaskService;
 
     @GetMapping("{projectId}")
-    public List<ProjectTask> getTasksFromProject(@PathVariable Long projectId) throws NotFoundException {
-        return projectTaskService.getTasksByProjectId(projectId);
+    public List<ProjectTaskDTO> getTasksFromProject(@PathVariable Long projectId) throws NotFoundException {
+        return projectTaskService.projectTasksToDTO(projectTaskService.getTasksByProjectId(projectId));
     }
 
     @PutMapping("")
@@ -33,7 +34,7 @@ public class ProjectTaskApiController {
     }
 
     @DeleteMapping("")
-    public ApiAnswer removeTaskFromProject(@RequestBody ProjectTaskDTO projectTaskDTO) {
+    public ApiAnswer removeTaskFromProject(@RequestBody ProjectTaskDTO projectTaskDTO) throws InvalidValuesException {
         projectTaskService.removeTaskFromProject(projectTaskDTO);
         return new ApiAnswer(HttpStatus.OK,
                 "Task "+ projectTaskDTO.getOrderId() + " removed from project " + projectTaskDTO.getProjectId());

@@ -28,21 +28,13 @@ public class ProjectApiController {
     UserProjectService userProjectService;
 
     @GetMapping("all")
-    public List<Project> getAllProjectsList() {
-        return projectService.getAllProjects();
+    public List<ProjectDTO> getAllProjectsList() {
+        return projectService.projectsToDTO(projectService.getAllProjects());
     }
 
     @GetMapping("{username}")
     public List<ProjectDTO> getUserProjectsList(@PathVariable String username) throws NotFoundException {
-        List<ProjectDTO> projects = new ArrayList<>();
-        projectService.getUserProjectsByUsername(username).forEach(
-                (Project project) -> projects.add(new ProjectDTO(
-                        project.getId(),
-                        project.getName(),
-                        project.getCreation_date(),
-                        project.getDescription(),
-                        project.getProjectTasks())));
-        return projects;
+        return projectService.projectsToDTO(projectService.getUserProjectsByUsername(username));
     }
 
     @PutMapping(value = "add/user", consumes = "application/json")

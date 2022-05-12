@@ -12,8 +12,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     @NonNull
     List<User> findAll();
-//    User findByUsername(String username);
+
+    // https://github.com/spring-projects/spring-data-jpa/issues/2472
     List<User> findAllByRolesContains(String role);
     Optional<User> findByUsername(String username);
     boolean existsByUsername(String username);
+    List<User> findAllByActiveIsTrue();
 }
