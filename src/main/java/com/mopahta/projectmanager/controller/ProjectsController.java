@@ -1,6 +1,7 @@
 package com.mopahta.projectmanager.controller;
 
 import com.mopahta.projectmanager.dto.UserDTO;
+import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -22,7 +23,7 @@ public class ProjectsController {
     ProjectService projectService;
 
     @GetMapping("all")
-    public String userProjects(Model model) {
+    public String userProjects(Model model) throws NotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             UserDTO userDTO = new UserDTO();

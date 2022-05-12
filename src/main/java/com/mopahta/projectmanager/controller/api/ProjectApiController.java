@@ -2,6 +2,7 @@ package com.mopahta.projectmanager.controller.api;
 
 import com.mopahta.projectmanager.dto.ProjectDTO;
 import com.mopahta.projectmanager.dto.UserProjectDTO;
+import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.Project;
 import com.mopahta.projectmanager.model.User;
 import com.mopahta.projectmanager.service.ProjectService;
@@ -30,7 +31,7 @@ public class ProjectApiController {
     }
 
     @GetMapping("{username}")
-    public List<ProjectDTO> getUserProjectsList(@PathVariable String username) {
+    public List<ProjectDTO> getUserProjectsList(@PathVariable String username) throws NotFoundException {
         List<ProjectDTO> projects = new ArrayList<>();
         projectService.getUserProjectsByUsername(username).forEach(
                 (Project project) -> {
@@ -45,13 +46,13 @@ public class ProjectApiController {
     }
 
     @PutMapping(value = "add/user", consumes = "application/json")
-    public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) {
+    public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.addUserToProject(userProjectDTO);
         return userProjectDTO;
     }
 
     @DeleteMapping(value = "remove/user", consumes = "application/json")
-    public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) {
+    public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.removeUserFromProject(userProjectDTO);
         return userProjectDTO;
     }

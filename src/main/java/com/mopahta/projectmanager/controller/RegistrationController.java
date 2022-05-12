@@ -1,6 +1,7 @@
 package com.mopahta.projectmanager.controller;
 
 import com.mopahta.projectmanager.dto.UserDTO;
+import com.mopahta.projectmanager.exception.InvalidValuesException;
 import com.mopahta.projectmanager.exception.UserAlreadyExistsException;
 import com.mopahta.projectmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class RegistrationController {
         try {
             userService.registerUser(userDTO);
         }
-        catch (UserAlreadyExistsException e) {
+        catch (UserAlreadyExistsException | InvalidValuesException e) {
             //bindingResult.rejectValue("username", "user.username", e.getMessage());
             model.addAttribute("user", userDTO);
             return "signup";

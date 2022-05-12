@@ -1,6 +1,7 @@
 package com.mopahta.projectmanager.service;
 
 import com.mopahta.projectmanager.dto.ProjectTaskDTO;
+import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.ProjectTask;
 import com.mopahta.projectmanager.model.ProjectTaskKey;
 import com.mopahta.projectmanager.repository.ProjectTaskRepository;
@@ -18,7 +19,7 @@ public class ProjectTaskService {
     @Autowired
     ProjectService projectService;
 
-    private ProjectTask DTOToProjectTask(ProjectTaskDTO projectTaskDTO) {
+    private ProjectTask DTOToProjectTask(ProjectTaskDTO projectTaskDTO) throws NotFoundException {
         ProjectTask task = new ProjectTask();
 
         task.setProject(projectService.getProjectById(projectTaskDTO.getProjectId()));
@@ -29,11 +30,11 @@ public class ProjectTaskService {
         return task;
     }
 
-    public List<ProjectTask> getTasksByProjectId(Long projectId) {
+    public List<ProjectTask> getTasksByProjectId(Long projectId) throws NotFoundException {
         return projectTaskRepository.findAllByProject(projectService.getProjectById(projectId));
     }
 
-    public void addTaskToProject(ProjectTaskDTO projectTaskDTO) {
+    public void addTaskToProject(ProjectTaskDTO projectTaskDTO) throws NotFoundException{
         projectTaskRepository.save(DTOToProjectTask(projectTaskDTO));
     }
 

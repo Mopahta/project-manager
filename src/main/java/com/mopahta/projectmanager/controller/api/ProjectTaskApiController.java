@@ -2,6 +2,7 @@
 package com.mopahta.projectmanager.controller.api;
 
 import com.mopahta.projectmanager.dto.ProjectTaskDTO;
+import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.ProjectTask;
 import com.mopahta.projectmanager.service.ProjectTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ public class ProjectTaskApiController {
     ProjectTaskService projectTaskService;
 
     @GetMapping("{projectId}")
-    public List<ProjectTask> getTasksFromProject(@PathVariable Long projectId) {
+    public List<ProjectTask> getTasksFromProject(@PathVariable Long projectId) throws NotFoundException {
         return projectTaskService.getTasksByProjectId(projectId);
     }
 
     @PutMapping("")
-    public ProjectTaskDTO addTaskToProject(@RequestBody ProjectTaskDTO projectTaskDTO) {
+    public ProjectTaskDTO addTaskToProject(@RequestBody ProjectTaskDTO projectTaskDTO) throws NotFoundException {
         projectTaskService.addTaskToProject(projectTaskDTO);
         return projectTaskDTO;
     }
@@ -33,5 +34,4 @@ public class ProjectTaskApiController {
         projectTaskService.removeTaskFromProject(projectTaskDTO);
         return projectTaskDTO;
     }
-
 }

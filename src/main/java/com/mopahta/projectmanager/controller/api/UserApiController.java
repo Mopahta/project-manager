@@ -2,6 +2,8 @@ package com.mopahta.projectmanager.controller.api;
 
 import com.mopahta.projectmanager.dto.UserDTO;
 import com.mopahta.projectmanager.dto.UserProjectDTO;
+import com.mopahta.projectmanager.exception.InvalidValuesException;
+import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.exception.UserAlreadyExistsException;
 import com.mopahta.projectmanager.model.User;
 import com.mopahta.projectmanager.model.UserProject;
@@ -29,7 +31,7 @@ public class UserApiController {
     }
 
     @GetMapping("{id}")
-    public User getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable Long id) throws NotFoundException {
         return userService.getUserById(id);
     }
 
@@ -44,30 +46,13 @@ public class UserApiController {
     }
 
     @PostMapping(value = "add", consumes = "application/json")
-    public UserDTO addUser(@RequestBody UserDTO userDTO) {
-        try {
-            userService.registerUser(userDTO);
-        } catch (UserAlreadyExistsException e) {
-            userDTO.setUsername("User with such name already exists!");
-        }
-        return userDTO;
-    }
-
-    @PostMapping(value = "add/all", consumes = "application/json")
-    public List<UserDTO> addAllUsers(@RequestBody List<UserDTO> userDTO) {
-        userDTO.forEach( (UserDTO user) -> {
-            try {
-                userService.registerUser(user);
-            } catch (UserAlreadyExistsException e) {
-                user.setUsername("User with such name already exists!");
-            }
-        });
-
+    public UserDTO addUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException, InvalidValuesException {
+        userService.registerUser(userDTO);
         return userDTO;
     }
 
     @PutMapping(value = "add/project", consumes = "application/json")
-    public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) {
+    public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.addUserToProject(userProjectDTO);
         return userProjectDTO;
     }
@@ -83,7 +68,7 @@ public class UserApiController {
     }
 
     @DeleteMapping(value = "remove/project", consumes = "application/json")
-    public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) {
+    public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.removeUserFromProject(userProjectDTO);
         return userProjectDTO;
     }
