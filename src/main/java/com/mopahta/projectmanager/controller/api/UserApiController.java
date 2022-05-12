@@ -1,5 +1,6 @@
 package com.mopahta.projectmanager.controller.api;
 
+import com.mopahta.projectmanager.dto.ApiAnswer;
 import com.mopahta.projectmanager.dto.UserDTO;
 import com.mopahta.projectmanager.dto.UserProjectDTO;
 import com.mopahta.projectmanager.exception.InvalidValuesException;
@@ -10,8 +11,11 @@ import com.mopahta.projectmanager.model.UserProject;
 import com.mopahta.projectmanager.service.UserProjectService;
 import com.mopahta.projectmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 
@@ -46,30 +50,36 @@ public class UserApiController {
     }
 
     @PostMapping(value = "add", consumes = "application/json")
-    public UserDTO addUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException, InvalidValuesException {
+    public ApiAnswer addUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException, InvalidValuesException {
         userService.registerUser(userDTO);
-        return userDTO;
+        return new ApiAnswer(HttpStatus.ACCEPTED, "User " + userDTO.getUsername() + " created");
     }
 
     @PutMapping(value = "add/project", consumes = "application/json")
-    public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
+    public ApiAnswer addUserToProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.addUserToProject(userProjectDTO);
-        return userProjectDTO;
+        return new ApiAnswer(HttpStatus.ACCEPTED,
+                "Project " + userProjectDTO.getProjectId() +
+                        " added to user " + userProjectDTO.getUserId());
     }
 
     @PutMapping(value = "deactivate/{id}")
-    public void deactivateUser(@PathVariable Long id) {
-
+    public ApiAnswer deactivateUser(@PathVariable Long id) throws NotFoundException {
+        userService.deactivateUserById(id);
+        return new ApiAnswer(HttpStatus.ACCEPTED, "User " + id + " deactivated");
     }
 
     @PutMapping(value = "activate/{id}")
-    public void activateUser(@PathVariable Long id) {
-
+    public ApiAnswer activateUser(@PathVariable Long id) throws NotFoundException {
+        userService.activateUserById(id);
+        return new ApiAnswer (HttpStatus.ACCEPTED, "User" + id + " activated");
     }
 
     @DeleteMapping(value = "remove/project", consumes = "application/json")
-    public UserProjectDTO removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
+    public ApiAnswer removeUserFromProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.removeUserFromProject(userProjectDTO);
-        return userProjectDTO;
+        return new ApiAnswer(HttpStatus.OK,
+                "Project " + userProjectDTO.getProjectId() +
+                        " removed from user " + userProjectDTO.getUserId());
     }
 }

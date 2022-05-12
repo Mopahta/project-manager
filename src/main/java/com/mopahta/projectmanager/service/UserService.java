@@ -76,4 +76,16 @@ public class UserService {
     public List<User> getUsers() {
         return userRepository.findAllByRolesContains("USER");
     }
+
+    public void deactivateUserById(Long id) throws NotFoundException {
+        User user = getUserById(id);
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
+    public void activateUserById(Long id) throws NotFoundException {
+        User user = getUserById(id);
+        user.setActive(true);
+        userRepository.save(user);
+    }
 }
