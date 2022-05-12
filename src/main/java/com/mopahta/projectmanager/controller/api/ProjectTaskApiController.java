@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("api/private/projects/tasks")
+@RequestMapping("api/v1/projects/tasks")
 public class ProjectTaskApiController {
 
     @Autowired
@@ -25,6 +25,12 @@ public class ProjectTaskApiController {
     @PutMapping("")
     public ProjectTaskDTO addTaskToProject(@RequestBody ProjectTaskDTO projectTaskDTO) {
         projectTaskService.addTaskToProject(projectTaskDTO);
+        return projectTaskDTO;
+    }
+
+    @DeleteMapping("")
+    public ProjectTaskDTO removeTaskFromProject(@RequestBody ProjectTaskDTO projectTaskDTO) {
+        projectTaskService.removeTaskFromProject(projectTaskDTO);
         return projectTaskDTO;
     }
 

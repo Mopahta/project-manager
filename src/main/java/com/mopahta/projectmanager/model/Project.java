@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "projects", schema = "project_manager_db")
+@SQLDelete(sql = "UPDATE projects SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Getter @Setter @NoArgsConstructor
 public class Project {
 
@@ -26,6 +30,8 @@ public class Project {
 
     @CreationTimestamp
     private Date creation_date;
+
+    private boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "project")
     List<UserProject> userProjects;

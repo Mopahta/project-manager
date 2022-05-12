@@ -36,4 +36,10 @@ public class ProjectTaskService {
     public void addTaskToProject(ProjectTaskDTO projectTaskDTO) {
         projectTaskRepository.save(DTOToProjectTask(projectTaskDTO));
     }
+
+    public void removeTaskFromProject(ProjectTaskDTO projectTaskDTO) {
+        projectTaskRepository.deleteById(
+                new ProjectTaskKey(projectTaskDTO.getOrderId(), projectTaskDTO.getProjectId())
+        );
+    }
 }

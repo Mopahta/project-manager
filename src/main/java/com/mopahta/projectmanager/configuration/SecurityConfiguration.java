@@ -29,8 +29,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
-                .antMatchers("/profile/**").authenticated()
-                .antMatchers("/api/private/**").hasRole("ADMIN")
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/projects/**").authenticated()
+                .antMatchers("/api/v1/**").hasRole("ADMIN")
                 .and()
                 .formLogin();
         http

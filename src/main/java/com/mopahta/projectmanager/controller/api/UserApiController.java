@@ -4,6 +4,7 @@ import com.mopahta.projectmanager.dto.UserDTO;
 import com.mopahta.projectmanager.dto.UserProjectDTO;
 import com.mopahta.projectmanager.exception.UserAlreadyExistsException;
 import com.mopahta.projectmanager.model.User;
+import com.mopahta.projectmanager.model.UserProject;
 import com.mopahta.projectmanager.service.UserProjectService;
 import com.mopahta.projectmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/private/users")
+@RequestMapping("api/v1/users")
 public class UserApiController {
 
     @Autowired
@@ -69,6 +70,16 @@ public class UserApiController {
     public UserProjectDTO addUserToProject(@RequestBody UserProjectDTO userProjectDTO) {
         userProjectService.addUserToProject(userProjectDTO);
         return userProjectDTO;
+    }
+
+    @PutMapping(value = "deactivate/{id}")
+    public void deactivateUser(@PathVariable Long id) {
+
+    }
+
+    @PutMapping(value = "activate/{id}")
+    public void activateUser(@PathVariable Long id) {
+
     }
 
     @DeleteMapping(value = "remove/project", consumes = "application/json")
