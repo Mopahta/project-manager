@@ -2,6 +2,7 @@ package com.mopahta.projectmanager.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -16,7 +17,8 @@ import java.util.List;
 @Table(name = "projects", schema = "project_manager_db")
 @SQLDelete(sql = "UPDATE projects SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor
 public class Project {
 
     @Id

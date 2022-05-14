@@ -1,8 +1,6 @@
 package com.mopahta.projectmanager.controller.api;
 
-import com.mopahta.projectmanager.dto.ApiAnswer;
-import com.mopahta.projectmanager.dto.ProjectDTO;
-import com.mopahta.projectmanager.dto.UserProjectDTO;
+import com.mopahta.projectmanager.dto.*;
 import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.Project;
 import com.mopahta.projectmanager.model.User;
@@ -37,6 +35,11 @@ public class ProjectApiController {
         return projectService.projectsToDTO(projectService.getUserProjectsByUsername(username));
     }
 
+    @GetMapping("users/{projectId}")
+    public List<UserInProjectDTO> getUsersInProjectList(@PathVariable Long projectId) throws NotFoundException {
+        return userProjectService.getUsersInProjectById(projectId);
+    }
+
     @PutMapping(value = "add/user", consumes = "application/json")
     public ApiAnswer addUserToProject(@RequestBody UserProjectDTO userProjectDTO) throws NotFoundException {
         userProjectService.addUserToProject(userProjectDTO);
@@ -60,8 +63,14 @@ public class ProjectApiController {
     }
 
     @DeleteMapping(value = "delete", consumes = "application/json")
-    public ApiAnswer deleteProject(@RequestBody ProjectDTO projectDTO) {
+    public ApiAnswer deleteProject(@RequestBody ProjectDTO projectDTO) throws NotFoundException {
         projectService.deleteProject(projectDTO);
         return new ApiAnswer(HttpStatus.OK, "Project " + projectDTO.getId() + " deleted");
+    }
+
+    @PutMapping(value = "update/{projectId}", consumes = "application/json")
+    public ApiAnswer updateProject(@RequestBody ProjectDTO projectDTO, @PathVariable Long projectId) throws NotFoundException {
+        projectService.updateProject(projectDTO, projectId);
+        return new ApiAnswer(HttpStatus.OK, "Project " + projectId + " updated");
     }
 }

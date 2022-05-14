@@ -28,13 +28,14 @@ public class UserService {
 
     public List<UserDTO> usersToDTO(List<User> users) {
         List<UserDTO> usersDTO = new ArrayList<>();
-        users.forEach((User user) -> {
-            usersDTO.add(new UserDTO(
-                    user.getId(),
-                    user.getUsername(),
-                    "",
-                    "",
-                    user.getRoles()));
+        users.forEach(
+                (User user) -> {
+                    usersDTO.add(new UserDTO(
+                            user.getId(),
+                            user.getUsername(),
+                            "",
+                            "",
+                            user.getRoles()));
         });
         return usersDTO;
     }

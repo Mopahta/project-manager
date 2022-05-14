@@ -24,9 +24,9 @@ public class ProjectTaskService {
     public List<ProjectTaskDTO> projectTasksToDTO(List<ProjectTask> projectTasks) {
         List<ProjectTaskDTO> projectTasksDTO = new ArrayList<>();
 
-        projectTasks.forEach((ProjectTask projectTask) -> {
-            projectTasksDTO.add(
-                    new ProjectTaskDTO(
+        projectTasks.forEach(
+                (ProjectTask projectTask) -> {
+                    projectTasksDTO.add(new ProjectTaskDTO(
                             projectTask.getId().getId(),
                             projectTask.getId().getProjectId(),
                             projectTask.getTask(),

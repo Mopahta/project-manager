@@ -1,6 +1,7 @@
 package com.mopahta.projectmanager.service;
 
 import com.mopahta.projectmanager.dto.ProjectDTO;
+import com.mopahta.projectmanager.dto.UserInProjectDTO;
 import com.mopahta.projectmanager.dto.UserProjectDTO;
 import com.mopahta.projectmanager.exception.NotFoundException;
 import com.mopahta.projectmanager.model.Project;
@@ -50,8 +51,15 @@ public class ProjectService {
         projectRepository.save(new Project(projectDTO.getName(), projectDTO.getDescription()));
     }
 
-    public void deleteProject(ProjectDTO projectDTO) {
-        projectRepository.deleteById(projectDTO.getId());
+    public void deleteProject(ProjectDTO projectDTO) throws NotFoundException {
+        projectRepository.delete(getProjectById(projectDTO.getId()));
+    }
+
+    public void updateProject(ProjectDTO projectDTO, Long projectId) throws NotFoundException {
+        Project project = getProjectById(projectId);
+        project.setName(projectDTO.getName());
+        project.setDescription(projectDTO.getDescription());
+        projectRepository.save(project);
     }
 
     public List<Project> findUserProjects(Collection<? extends GrantedAuthority> authorities, String username) throws NotFoundException {
