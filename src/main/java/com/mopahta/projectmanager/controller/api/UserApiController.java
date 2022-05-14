@@ -12,11 +12,12 @@ import com.mopahta.projectmanager.service.UserProjectService;
 import com.mopahta.projectmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -32,12 +33,28 @@ public class UserApiController {
 
     @GetMapping("all")
     public List<UserDTO> getAllUsersList() {
-        return userService.usersToDTO(userService.getAllUsers());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                return userService.usersToDTO(userService.getAllUsers());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     @GetMapping("all/active")
     public List<UserDTO> getActiveUsersList() {
-        return userService.usersToDTO(userService.getActiveUsers());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                return userService.usersToDTO(userService.getActiveUsers());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     @GetMapping("{id}")
@@ -47,12 +64,28 @@ public class UserApiController {
 
     @GetMapping("all/admins")
     public List<UserDTO> getAdminsList() {
-        return userService.usersToDTO(userService.getAdmins());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                return userService.usersToDTO(userService.getAdmins());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     @GetMapping("all/users")
     public List<UserDTO> getUsersList() {
-        return userService.usersToDTO(userService.getUsers());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                return userService.usersToDTO(userService.getUsers());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     @PostMapping(value = "add", consumes = "application/json")
@@ -71,14 +104,30 @@ public class UserApiController {
 
     @PutMapping(value = "deactivate/{id}")
     public ApiAnswer deactivateUser(@PathVariable Long id) throws NotFoundException {
-        userService.deactivateUserById(id);
-        return new ApiAnswer(HttpStatus.ACCEPTED, "User " + id + " deactivated");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                userService.deactivateUserById(id);
+                return new ApiAnswer(HttpStatus.ACCEPTED, "User " + id + " deactivated");
+            }
+        }
+
+        return new ApiAnswer(HttpStatus.FORBIDDEN, "No authorities to deactivate user");
     }
 
     @PutMapping(value = "activate/{id}")
     public ApiAnswer activateUser(@PathVariable Long id) throws NotFoundException {
-        userService.activateUserById(id);
-        return new ApiAnswer (HttpStatus.ACCEPTED, "User" + id + " activated");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userService.hasAdminAuthority(authentication.getAuthorities())) {
+                userService.activateUserById(id);
+                return new ApiAnswer (HttpStatus.ACCEPTED, "User" + id + " activated");
+            }
+        }
+
+        return new ApiAnswer(HttpStatus.FORBIDDEN, "No authorities to activate user");
     }
 
     @DeleteMapping(value = "remove/project", consumes = "application/json")

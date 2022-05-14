@@ -7,10 +7,15 @@ import com.mopahta.projectmanager.exception.UserAlreadyExistsException;
 import com.mopahta.projectmanager.model.User;
 import com.mopahta.projectmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,5 +114,16 @@ public class UserService {
         User user = getUserById(id);
         user.setActive(true);
         userRepository.save(user);
+    }
+
+    public boolean hasAdminAuthority(Collection<? extends GrantedAuthority> authorities) {
+        boolean isAdmin = false;
+
+        for (GrantedAuthority authority : authorities) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+            }
+        }
+        return isAdmin;
     }
 }

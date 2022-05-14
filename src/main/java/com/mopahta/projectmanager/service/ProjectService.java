@@ -9,14 +9,12 @@ import com.mopahta.projectmanager.model.UserProject;
 import com.mopahta.projectmanager.repository.ProjectRepository;
 import com.mopahta.projectmanager.repository.UserProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -37,7 +35,7 @@ public class ProjectService {
                     projectsDTO.add(new ProjectDTO(
                             project.getId(),
                             project.getName(),
-                            project.getCreation_date(),
+                            project.getCreationdate(),
                             project.getDescription()));
                 });
         return projectsDTO;
@@ -89,5 +87,39 @@ public class ProjectService {
             throw new NotFoundException("No such project with id " + id);
         }
         return project.get();
+    }
+
+    public Page<ProjectDTO> findProjectsPaginated(String username, Pageable pageable, String sortedBy,
+                                                  String filterByName, String filterByDescription) throws NotFoundException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Project> projects;
+
+        if (username.isEmpty()) {
+            projects = projectRepository.findAllByNameContainsAndDescriptionContains(
+                    filterByName, filterByDescription, Sort.by(sortedBy));
+        }
+        else {
+            List<Long> projectIds = new ArrayList<>();
+            getUserProjectsByUsername(username).forEach(project -> {
+                projectIds.add(project.getId());
+            });
+            projects = projectRepository.findAllByIdInAndNameContainsAndDescriptionContains(
+                    projectIds, filterByName, filterByDescription, Sort.by(sortedBy));
+        }
+
+        List<Project> projectList;
+
+        if (projects.size() < startItem) {
+            projectList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, projects.size());
+            projectList = projects.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(projectsToDTO(projectList),
+                PageRequest.of(currentPage, pageSize), projects.size());
     }
 }
