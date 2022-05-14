@@ -31,7 +31,7 @@ public class Project {
     private String description = "";
 
     @CreationTimestamp
-    private Date creation_date;
+    private Date creationdate;
 
     private boolean deleted = Boolean.FALSE;
 

@@ -17,7 +17,7 @@ public class ProjectDTO {
 
     private String name;
 
-    private Date creation_date;
+    private Date creationdate;
 
     private String description;
 }

@@ -32,7 +32,7 @@ public class UserProject {
     private String roles;
 
     @CreationTimestamp
-    private Date date_joined;
+    private Date datejoined;
 
     private boolean deleted = Boolean.FALSE;
 }
